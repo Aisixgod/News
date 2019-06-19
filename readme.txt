@@ -1,2 +1,1 @@
-Git is a version control system.
-Git is free software.xiugai
+请同学们把代码提交到这里来。
