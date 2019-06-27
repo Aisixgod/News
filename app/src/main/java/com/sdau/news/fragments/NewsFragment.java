@@ -57,16 +57,6 @@ public class NewsFragment extends Fragment  {
         }
     };*/
 
-   private Handler mHandler = new Handler(){
-       @Override
-       public void handleMessage(@NonNull Message msg) {
-          if(msg.what==1){
-              newsAdapter.refreshNewsAdapter(result.getNews());
-              swipeRefresh.setRefreshing(false);
-              newsAdapter.notifyDataSetChanged();
-          }
-       }
-   };
 
     public NewsFragment() {
     }
@@ -121,7 +111,7 @@ public class NewsFragment extends Fragment  {
             swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
                 @Override
                 public void onRefresh() {
-                        new Thread(new Runnable() {
+                        new Thread(){
                             @Override
                             public void run() {
                                 Log.d("TAG", "run: 我在执行下拉刷新任务");
@@ -135,13 +125,19 @@ public class NewsFragment extends Fragment  {
                                 result = JsonUtil.parseJSON(json);
                                 Log.d("TAG", "刷新的："+result.getNews().get(0).getTitle());
 
-                                Message message=Message.obtain();
-                                message.what=1;
+                           getActivity().runOnUiThread(new Runnable() {
+                               @Override
+                               public void run() {
+                                   newsAdapter.refreshNewsAdapter(result.getNews());
+                                   swipeRefresh.setRefreshing(false);
+                                   newsAdapter.notifyDataSetChanged();
+                               }
+                           });
                             }
-                        });
+                        }.start();
 
 
-                }
+                        }
             });
 
 

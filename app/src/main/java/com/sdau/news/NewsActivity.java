@@ -38,7 +38,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class NewsActivity extends AppCompatActivity implements View.OnClickListener{
+public class NewsActivity extends AppCompatActivity {
     //private static final String TAG ;
 
 
@@ -210,11 +210,7 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    public void onClick(View view){
-        Intent intent=null;
 
-        startActivity(intent);
-    }
 
     @Override
     public void onBackPressed() {
