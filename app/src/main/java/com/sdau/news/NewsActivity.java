@@ -27,6 +27,7 @@ import com.sdau.news.fragments.AttentionFragment;
 import com.sdau.news.fragments.CollectFragment;
 import com.sdau.news.fragments.FansFragment;
 import com.sdau.news.fragments.FeedbackFragment;
+import com.sdau.news.fragments.HistoryFragment;
 import com.sdau.news.fragments.NewsContainerFragment;
 import com.sdau.news.fragments.NoticeFragment;
 import com.sdau.news.utils.SQLiteNewsImpl;
@@ -74,6 +75,13 @@ public class NewsActivity extends AppCompatActivity implements View.OnClickListe
                         fragment = new FeedbackFragment(true);
                     }else {
                         fragment = new FeedbackFragment();
+                    }
+                    break;
+                case R.id.nav_history:
+                    if(SQLiteNewsImpl.newInstance(NewsActivity.this).queryHistoryAll()==null) {
+                        fragment = new HistoryFragment(true);
+                    }else {
+                        fragment = new HistoryFragment();
                     }
                     break;
             }

@@ -37,6 +37,17 @@
         />
 
     <TextView
+        android:id="@+id/delete_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:drawableEnd="@mipmap/inter"
+        android:clickable="true"
+        android:text="清空浏览记录"
+
+       />
+
+    <TextView
         android:id="@+id/feedback_us"
         android:textSize="30sp"
         android:drawableEnd="@mipmap/inter"

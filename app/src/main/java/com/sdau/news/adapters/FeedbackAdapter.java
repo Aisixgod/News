@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +44,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
         public TextView feedbackContext;
         public TextView support;
         public TextView stamp;
+        public Button delete_feedback;
 
 
 
@@ -54,7 +56,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
             feedbackContext = view.findViewById(R.id.feedbackContent);
             support = view.findViewById(R.id.feedbackSupport);
             stamp = view.findViewById(R.id.feedbackStamp);
-
+            delete_feedback=view.findViewById(R.id.delete_feedback);
 
         }
     }
@@ -81,13 +83,27 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
 
             };
         });
+        holder.delete_feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int position =holder.getAdapterPosition();
+                Feedback feedback=feedbacks.get(position);
+                if(SQLiteNewsImpl.newInstance(mContext).deleteFeedback(feedback)){
+                    Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
 
+                }
+
+            }
+        });
         holder.support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position =holder.getAdapterPosition();
                 Feedback feedback=feedbacks.get(position);
-                SQLiteNewsImpl.newInstance(mContext).addFeedbackSupport(feedback);
+                if(SQLiteNewsImpl.newInstance(mContext).addFeedbackSupport(feedback)){
+                    Toast.makeText(mContext, "已点赞", Toast.LENGTH_LONG).show();
+
+                }
 
             }
         });
@@ -96,8 +112,10 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
             public void onClick(View view) {
                 int position =holder.getAdapterPosition();
                 Feedback feedback=feedbacks.get(position);
-                SQLiteNewsImpl.newInstance(mContext).addFeedbackStamp(feedback);
+                if(SQLiteNewsImpl.newInstance(mContext).addFeedbackStamp(feedback)){
+                    Toast.makeText(mContext, "已点踩", Toast.LENGTH_LONG).show();
 
+                }
             }
         });
 
@@ -107,8 +125,8 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull FeedbackAdapter.ViewHolder holder, int position) {
             Feedback feedback=feedbacks.get(position);
-            holder.stamp.setText(feedback.getStamp());
-            holder.support.setText(feedback.getSupport());
+            holder.stamp.setText(String.valueOf(feedback.getStamp()));
+            holder.support.setText(String.valueOf(feedback.getSupport()));
             holder.feedbackContext.setText(feedback.getSubstance());
             holder.feedback_news_title.setText(feedback.getFeedbackNews().getTitle());
     }

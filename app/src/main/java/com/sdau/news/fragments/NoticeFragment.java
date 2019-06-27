@@ -20,6 +20,7 @@ import com.sdau.news.FeedbackUsActivity;
 import com.sdau.news.NewsActivity;
 import com.sdau.news.R;
 import com.sdau.news.utils.CacheUtil;
+import com.sdau.news.utils.SQLiteNewsImpl;
 
 import java.io.File;
 
@@ -47,7 +48,7 @@ public class NoticeFragment extends Fragment {
         //反馈窗口
        TextView about_us=view.findViewById(R.id.about_us);
         TextView cache_file=view.findViewById(R.id.cache_file);
-
+        TextView delete_history=view.findViewById(R.id.delete_history);
 
         try {
             cache_file.setText(CacheUtil.getTotalCacheSize(getActivity().getApplicationContext()));
@@ -65,6 +66,17 @@ public class NoticeFragment extends Fragment {
                 }
 
 
+        });
+
+        delete_history.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(SQLiteNewsImpl.newInstance(getActivity()).deleteALLHistory()){
+                    Toast.makeText(getActivity(), "浏览记录已清理！", Toast.LENGTH_SHORT).show();
+                }
+
+
+            }
         });
 
         about_us.setOnClickListener(new View.OnClickListener() {

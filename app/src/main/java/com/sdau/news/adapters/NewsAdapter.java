@@ -102,7 +102,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 Intent intent = new Intent(mContext, NewsContextActivity.class);
                 intent.putExtra("news_data",news);
                  mContext.startActivity(intent);
-
+                SQLiteNewsImpl.newInstance(mContext).addHistory(news);
             };
         });
         return holder;

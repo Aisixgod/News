@@ -51,6 +51,15 @@
                 android:layout_gravity="start"
                 />
 
+            <TextView
+                android:layout_marginStart="20dp"
+                android:id="@+id/feedbackStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_gravity="end"
+                android:drawableStart="@drawable/stamp"
+                />
 
             <TextView
                 android:id="@+id/feedbackSupport"
@@ -59,18 +68,19 @@
                 android:textSize="16sp"
                 android:layout_gravity="end"
                 android:layout_marginStart="40dp"
-                android:drawableStart="@mipmap/support"
+                android:drawableStart="@drawable/support"
 
                 />
 
-            <TextView
+
+
+            <Button
+                android:id="@+id/delete_feedback"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_marginStart="20dp"
-                android:id="@+id/feedbackStamp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="16sp"
-                android:layout_gravity="end"
-                android:drawableStart="@mipmap/stamp"
+
+                android:background="@mipmap/delete_collect"
                 />
 
         </LinearLayout>

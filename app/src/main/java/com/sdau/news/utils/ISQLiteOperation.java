@@ -47,6 +47,8 @@ public interface ISQLiteOperation {
 
     boolean addFeedback(Feedback feedback);
 
+    boolean deleteHistory(News data);
+
     boolean deleteFeedback(Feedback feedback);
 
     boolean addFeedbackSupport(Feedback feedback);

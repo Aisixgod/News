@@ -12,15 +12,20 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.sdau.news.beans.Feedback;
 import com.sdau.news.beans.News;
 import com.sdau.news.utils.SQLiteNewsImpl;
 
@@ -56,6 +61,25 @@ public class NewsContextActivity extends AppCompatActivity {
 
         toolbar.inflateMenu(R.menu.menu_newscontent_toolbar_item);
         toolbar.setTitle(data.getTitle());
+        Button feedbackEditTextButton=findViewById(R.id.feedbackEditTextButton);
+        EditText feedbackEditText=findViewById(R.id.feedback_editText);
+        feedbackEditTextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    String substance=feedbackEditText.getText().toString();
+                    Feedback feedback=new Feedback();
+                    feedback.setSubstance(substance);
+                    feedback.setFeedbackNews(data);
+                    feedbackEditText.getText().clear();
+                    if(SQLiteNewsImpl.newInstance(NewsContextActivity.this).addFeedback(feedback)) {
+                        Toast.makeText(NewsContextActivity.this, "发表成功！", Toast.LENGTH_SHORT).show();
+                    }
+
+            }
+        });
+
+
         collectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,6 +125,8 @@ public class NewsContextActivity extends AppCompatActivity {
             }
         });
         webView.loadUrl(data.getUrl());
+
+
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.List;
 
 public class SQLiteNewsImpl implements ISQLiteOperation {
     private static final String TAG = "SQLiteImpl";
-    private static Integer history_date=0;
+    private static Integer history_date;
     private MyHelper helper;
     private static ISQLiteOperation favouriteOp;
 
@@ -146,6 +146,7 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
 
     @Override
     public boolean addHistory(News data) {
+        if(history_date==null){history_date=0;}
         history_date+=1;
         SQLiteDatabase db = helper.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -171,7 +172,7 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] columns = {"uniquekey", "title", "date", "category",
                 "author_name", "url", "thumbnail_pic_s", "history_date"};
-        Cursor cursor = db.query(ISQLiteOperation.TABLE_NAME_HISTORY, columns, null, null, null, null, "history__date");
+        Cursor cursor = db.query(ISQLiteOperation.TABLE_NAME_HISTORY, columns, null, null, null, null, "history_date");
         if (cursor != null && cursor.getCount() > 0) {
             List<News> newsHistory = new ArrayList<>();
             while (cursor.moveToNext()) {
@@ -190,6 +191,7 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
 
                 newsHistory.add(new News(uniquekey, title, date, category,
                         author_name, url, thumbnail_pic_s));
+                Log.d(TAG, "queryHistoryAll: 浏览记录为"+title);
             }
             cursor.close();
             db.close();
@@ -222,6 +224,16 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
             Log.d(TAG,"added Feedback");
         }
         return result != -1;
+    }
+
+    @Override
+    public boolean deleteHistory(News data) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        int result = db.delete(ISQLiteOperation.TABLE_NAME_HISTORY, "uniquekey=?",
+                new String[]{data.getUniquekey()});
+        db.close();
+        Log.d(TAG,"deleted History");
+        return result >= 1 ;
     }
 
     @Override
@@ -267,7 +279,7 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] columns = {"uniquekey", "title", "date", "category",
                 "author_name", "url", "thumbnail_pic_s", "substance","support","stamp"};
-        Cursor cursor = db.query(ISQLiteOperation.TABLE_NAME_FEEDBACK, columns, null, null, null, null, "history__date");
+        Cursor cursor = db.query(ISQLiteOperation.TABLE_NAME_FEEDBACK, columns, null, null, null, null, "uniquekey");
         if (cursor != null && cursor.getCount() > 0) {
             List<Feedback> allFeedback = new ArrayList<Feedback>();
             while (cursor.moveToNext()) {

@@ -36,7 +36,7 @@ public class MyHelper extends SQLiteOpenHelper {
         /**
          * 浏览记录表history   static int history_date（时间排序）
          */
-        db.execSQL("create table if not exists "+ISQLiteOperation.TABLE_NAME_HISTORY+"(_id integer primary key autoincrement,uniquekey text,title text,date text,category text,author_name text,url text,thumbnail_pic_s text,histroy_date INTEGER)");
+        db.execSQL("create table if not exists "+ISQLiteOperation.TABLE_NAME_HISTORY+"(_id integer primary key autoincrement,uniquekey text,title text,date text,category text,author_name text,url text,thumbnail_pic_s text,history_date INTEGER)");
 
         /**
          * 新闻回复表feedback substance、support、stamp
