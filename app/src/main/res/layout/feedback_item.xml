@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp"
+    android:clickable="true"
+    >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/feedbackContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:layout_margin="5dp"
+                />
+            <TextView
+                android:id="@+id/feedback_news_title"
+                android:textSize="15sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/newsInfo"
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_gravity="bottom|center_vertical"
+
+            >
+            <TextView
+                android:id="@+id/feedbackTime"
+                android:layout_width="wrap_content"
+                android:textSize="15sp"
+                android:layout_height="20dp"
+                android:layout_gravity="start"
+                />
+
+
+            <TextView
+                android:id="@+id/feedbackSupport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_gravity="end"
+                android:layout_marginStart="40dp"
+                android:drawableStart="@mipmap/support"
+
+                />
+
+            <TextView
+                android:layout_marginStart="20dp"
+                android:id="@+id/feedbackStamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:layout_gravity="end"
+                android:drawableStart="@mipmap/stamp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

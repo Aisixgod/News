@@ -3,81 +3,83 @@ package com.sdau.news;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button but1;
-    private Button but2,but3,but4,but5;
+import com.sdau.news.beans.Result;
+import com.sdau.news.fragments.NewsContainerFragment;
+import com.sdau.news.utils.HttpUtil;
+import com.sdau.news.utils.JsonUtil;
+import com.sdau.news.utils.SQLiteNewsImpl;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+
+
+public class MainActivity extends AppCompatActivity {
+
+    private MyApplication myApplication;
+    private ArrayList<Result> resultArrayList=new ArrayList<Result>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        but1=findViewById(R.id.button);
-        but2=findViewById(R.id.button2);
-        but3=findViewById(R.id.button3);
-        but4=findViewById(R.id.button4);
-        but5=findViewById(R.id.button5);
-        but1.setOnClickListener(this);
-        but2.setOnClickListener(this);
-        but3.setOnClickListener(this);
-        but4.setOnClickListener(this);
-        but5.setOnClickListener(this);
-        Log.d("TAG", "onCreate: 1");
-    }
+        myApplication=(MyApplication) getApplication();
+        SQLiteNewsImpl.newInstance(this);
+        //开启线程
+        new Thread(){
+            @Override
+            public void run() {
+                //耗时操作交给子线程
+                try {
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.d("TAG", "onStop:1 ");
-    }
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.d("TAG", "onResume: 1");
-    }
+                    initData();
+                   //主线程
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           Intent intent=new Intent(MainActivity.this,NewsActivity.class);
+                         myApplication.setResultArrayList(resultArrayList);
+                            startActivity(intent);
+                            finish();
+                       }
+                   });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("TAG", "onRestart:1 ");
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("TAG", "onDestroy: 1");
+            }
+        }.start();
+
+
     }
 
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("TAG", "onPause:1 ");
-    }
 
-    public void onClick(View view){
-        Intent intent=null;
-        switch (view.getId()) {
-            case R.id.button2:
-                intent = new Intent(this,MainActivity.class);
-                break;
-            case R.id.button3:
-                intent = new Intent(this,SecondActivity.class);
-                break;
-            case R.id.button4:
-                intent = new Intent(this,ThirdActivity.class);
-                break;
-            case R.id.button5:
-                intent = new Intent(this,FourthActivity.class);
-                break;
-            case R.id.button: intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://www.baidu.com"));
+    public void initData(){
 
+        for(int i=0;i<myApplication.type.size();i++) {
+            Log.d("URL",  "https://toutiao-ali.juheapi.com/toutiao/index?type=" + myApplication.type.get(i));
+          //  String url = "https://toutiao-ali.juheapi.com/toutiao/index" + myApplication.type.get(i);
+
+            String json = null;
+            try {
+                json = HttpUtil.getALiYun(myApplication.type.get(i));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Result result = JsonUtil.parseJSON(json);
+            Log.d("TAG", "initData: 我的json数据"+result.getNews().get(0).getTitle());
+            resultArrayList.add(result);
         }
-        startActivity(intent);
     }
+
+
 }
+
+
+

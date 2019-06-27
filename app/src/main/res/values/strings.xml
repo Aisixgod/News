@@ -1,3 +1,16 @@
 <resources>
-    <string name="app_name">News</string>
+    <string name="app_name">观察者</string>
+    <string name="myAttention">关注</string>
+    <string name="myFans">粉丝</string>
+    <string name="myFeedback">我的评论</string>
+    <string name="types_top">头条</string>
+    <string name="types_social">社会</string>
+    <string name="types_national">国内</string>
+    <string name="types_international">国际</string>
+    <string name="types_entertainment">娱乐</string>
+    <string name="types_sport">体育</string>
+    <string name="types_military">军事</string>
+    <string name="types_technology">科技</string>
+    <string name="types_economy">财经</string>
+    <string name="types_fashion">时尚</string>
 </resources>

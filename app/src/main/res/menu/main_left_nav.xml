@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@+id/nav_attention"
+                android:icon="@mipmap/attention"
+                android:title="@string/myAttention"
+            />
+        <item
+            android:id="@+id/nav_fans"
+            android:icon="@mipmap/fans"
+            android:title="@string/myFans"
+            />
+        <item
+            android:id="@+id/nav_feedback"
+            android:icon="@mipmap/feedback"
+            android:title="@string/myFeedback"
+            />
+        <item android:id="@+id/nav_history"
+            android:icon="@mipmap/history"
+            android:title="浏览历史"
+            />
+    </group>
+</menu>

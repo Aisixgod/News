@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="types">
+        <item>@string/types_top</item>
+        <item>@string/types_social</item>
+        <item>@string/types_national</item>
+        <item>@string/types_international</item>
+        <item>@string/types_entertainment</item>
+        <item>@string/types_sport</item>
+        <item>@string/types_military</item>
+        <item>@string/types_technology</item>
+        <item>@string/types_economy</item>
+        <item>@string/types_fashion</item>
+    </string-array>
+
+</resources>
