@@ -102,7 +102,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 Intent intent = new Intent(mContext, NewsContextActivity.class);
                 intent.putExtra("news_data",news);
                  mContext.startActivity(intent);
-                SQLiteNewsImpl.newInstance(mContext).addHistory(news);
+                 if(SQLiteNewsImpl.newInstance(mContext).queryHistoryByNews(news)==null) {
+                     SQLiteNewsImpl.newInstance(mContext).addHistory(news);
+                 }
+
             };
         });
         return holder;
@@ -113,9 +116,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             News news = mNews.get(position);
             holder.newsTitle.setText(news.getTitle());
             holder.newsDate.setText(news.getDate());
-            if(news.getFeedback()!=null) {
-                holder.mewsFeedbackNumber.setText(news.getFeedback().size());
-            }else holder.mewsFeedbackNumber.setText("0");
+            holder.mewsFeedbackNumber.setText(String.valueOf(SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news)));
+
         Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
 
 

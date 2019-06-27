@@ -9,14 +9,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 public class FeedbackUsActivity extends AppCompatActivity {
 
+    private EditText editText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_us);
         Button feedbackCommitButton=findViewById(R.id.feedbackCommitButton);
+       editText=findViewById(R.id.us_editText);
         feedbackCommitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -35,14 +38,12 @@ public class FeedbackUsActivity extends AppCompatActivity {
         normalDialog.setIcon(R.mipmap.ic_launcher_guanchazhe);
 
         normalDialog.setMessage("感谢您的反馈！");
-        normalDialog.setPositiveButton("返回",
+        normalDialog.setPositiveButton("确定",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         //...To-do
-                        Intent intent=new Intent(FeedbackUsActivity.this,NewsActivity.class);
-                        startActivity(intent);
-                        finish();
+                            editText.getText().clear();
                     }
                 });
         // 显示

@@ -1,7 +1,6 @@
 package com.sdau.news.fragments;
 
 import android.os.Bundle;
-import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +13,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
-import com.sdau.news.MyApplication;
 import com.sdau.news.R;
 import com.sdau.news.adapters.PagerAdapter;
 import com.sdau.news.beans.Result;
-import com.sdau.news.utils.HttpUtil;
-import com.sdau.news.utils.JsonUtil;
+import com.sdau.news.utils.CubeOutTransformer;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.google.android.material.tabs.TabLayout.MODE_FIXED;
@@ -107,6 +103,7 @@ public class NewsContainerFragment extends Fragment implements Serializable {
         TabLayout mTabLayout=view.findViewById(R.id.news_tab);
 
         viewPager=view.findViewById(R.id.news_viewpager);
+
         ButterKnife.bind(this, view);
 
         fragmentManager = getActivity().getSupportFragmentManager();
@@ -124,6 +121,7 @@ public class NewsContainerFragment extends Fragment implements Serializable {
 
         //tabLayout与pagerView建立监听
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
+        viewPager.setPageTransformer(true,new CubeOutTransformer());
         return view;
     }
 

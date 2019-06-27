@@ -36,6 +36,8 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
     private CollectAdapter.ViewHolder holder;
 
 
+
+
     public CollectAdapter(Context context){
         mContext=context;
         collectSQL=SQLiteNewsImpl.newInstance(context);
@@ -45,6 +47,13 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
 
     }
 
+    public void setNews(List<News> news){
+        mNews=news;
+    }
+
+    public List<News> getNews(){
+        return mNews;
+    }
 
 
 
@@ -101,12 +110,29 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
              */
             @Override
             public void onClick(View view) {
-                int position =holder.getAdapterPosition();
-                News news=mNews.get(position);
-                Log.d("TAG", "onClick:删除的标题为： "+news.getTitle());
-                collectSQL.deleteCollect(news);
-                collectSQL.createTable();
-                Toast.makeText(mContext,"删除成功",Toast.LENGTH_LONG).show();
+                if (mNews.isEmpty()) {
+                    notifyDataSetChanged();
+                } else {
+                    int position = holder.getAdapterPosition();
+                    if(position>=mNews.size()){
+                        position=mNews.size()-1;
+                    }
+                    if(position<=0){
+                        position=0;
+                    }
+                    Log.d("TAG", "onClick: Position为：" + position);
+                    News news = mNews.get(position);
+                    Log.d("TAG", "onClick:删除的标题为： " + news.getTitle());
+
+                    collectSQL.createTable();
+                    if (collectSQL.deleteCollect(news)) {
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                    }
+                    mNews.remove(position);
+                    notifyItemRemoved(position);
+                    notifyDataSetChanged();
+
+                }
             }
         });
 
@@ -118,9 +144,8 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
         News news = mNews.get(position);
         holder.newsTitle.setText(news.getTitle());
         holder.newsDate.setText(news.getDate());
-        if(news.getFeedback()!=null) {
-            holder.mewsFeedbackNumber.setText(news.getFeedback().size());
-        }else holder.mewsFeedbackNumber.setText("0");
+        holder.mewsFeedbackNumber.setText(String.valueOf(SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news)));
+
         Log.d("TAG", "onBindViewHolder: 新闻图片内容为："+news.getThumbnail_pic_s());
          Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
 

@@ -96,14 +96,30 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
             @Override
             public void onClick(View view) {
-                int position =holder.getAdapterPosition();
-                News news=mNews.get(position);
-                Log.d("TAG", "onClick:删除的标题为： "+news.getTitle());
+                if (mNews.isEmpty()) {
+                    notifyDataSetChanged();
+                } else {
+                    int position = holder.getAdapterPosition();
+                    if (position >= mNews.size()) {
+                        position = mNews.size() - 1;
+                    }
+                    if (position <= 0) {
+                        position = 0;
+                    }
+
+                    News news = mNews.get(position);
+                    Log.d("TAG", "onClick:删除的标题为： " + news.getTitle()+position);
 
 
-                if( historySQL.deleteHistory(news)) {
+                    if (historySQL.deleteHistory(news)) {
 
-                    Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                        mNews.remove(position);
+                        notifyItemRemoved(position);
+
+                        notifyItemRangeChanged(position, mNews.size() - position);
+
+                    }
                 }
             }
         });
@@ -118,10 +134,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
         holder.newsTitle.setText(news.getTitle());
          holder.newsDate.setText(news.getDate());
-        if(news.getFeedback()!=null) {
-            holder.mewsFeedbackNumber.setText(news.getFeedback().size());
-        }else holder.mewsFeedbackNumber.setText("0");
-       Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
+        holder.mewsFeedbackNumber.setText(String.valueOf(SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news)));
+
+        Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
 
 
     }

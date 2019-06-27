@@ -71,6 +71,10 @@ public class NoticeFragment extends Fragment {
         delete_history.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(SQLiteNewsImpl.newInstance(getActivity()).queryHistoryAll()==null){
+                    Toast.makeText(getActivity(), "浏览记录已为空！", Toast.LENGTH_SHORT).show();
+
+                }
                 if(SQLiteNewsImpl.newInstance(getActivity()).deleteALLHistory()){
                     Toast.makeText(getActivity(), "浏览记录已清理！", Toast.LENGTH_SHORT).show();
                 }

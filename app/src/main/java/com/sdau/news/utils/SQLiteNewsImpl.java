@@ -204,6 +204,42 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
     }
 
     @Override
+    public News queryHistoryByNews(News data) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] columns = {"uniquekey", "title", "date", "category",
+                "author_name", "url", "thumbnail_pic_s"};
+        Cursor cursor = db.query(ISQLiteOperation.TABLE_NAME_HISTORY, columns, "uniquekey=?", new String[]{data.getUniquekey()}, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            News newsHistory = new News();
+            while (cursor.moveToNext()) {
+                String uniquekey = cursor.getString(cursor
+                        .getColumnIndex("uniquekey"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String category = cursor.getString(cursor
+                        .getColumnIndex("category"));
+                String author_name = cursor.getString(cursor
+                        .getColumnIndex("author_name"));
+                String url = cursor.getString(cursor.getColumnIndex("url"));
+                String thumbnail_pic_s = cursor.getString(cursor
+                        .getColumnIndex("thumbnail_pic_s"));
+
+
+                newsHistory=new News(uniquekey, title, date, category,
+                        author_name, url, thumbnail_pic_s);
+
+            }
+            cursor.close();
+            db.close();
+            return newsHistory;
+
+        }
+        cursor.close();
+        db.close();
+        return null;
+    }
+
+    @Override
     public boolean addFeedback( Feedback feedback) {
         News data=feedback.getFeedbackNews();
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -272,6 +308,47 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
             Log.d(TAG,"added Feedback");
         }
         return result != -1;
+    }
+
+    @Override
+    public int queryFeedbackByNews(News data) {
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] columns = {"uniquekey", "title", "date", "category",
+                "author_name", "url", "thumbnail_pic_s", "substance","support","stamp"};
+        Cursor cursor = db.query(ISQLiteOperation.TABLE_NAME_FEEDBACK, columns, "uniquekey=?", new String[]{data.getUniquekey()}, null, null, null);
+        if (cursor != null && cursor.getCount() > 0) {
+            List<Feedback> allFeedback = new ArrayList<Feedback>();
+            while (cursor.moveToNext()) {
+                String uniquekey = cursor.getString(cursor
+                        .getColumnIndex("uniquekey"));
+                String title = cursor.getString(cursor.getColumnIndex("title"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                String category = cursor.getString(cursor
+                        .getColumnIndex("category"));
+                String author_name = cursor.getString(cursor
+                        .getColumnIndex("author_name"));
+                String url = cursor.getString(cursor.getColumnIndex("url"));
+                String thumbnail_pic_s = cursor.getString(cursor
+                        .getColumnIndex("thumbnail_pic_s"));
+                String substance=cursor.getString(cursor.getColumnIndex("substance"));
+                int support=cursor.getInt(cursor.getColumnIndex("support"));
+                int stamp=cursor.getInt(cursor.getColumnIndex("stamp"));
+                Feedback f=new Feedback();
+                f.setFeedbackNews(new News(uniquekey, title, date, category,
+                        author_name, url, thumbnail_pic_s));
+                f.setSubstance(substance);
+                f.setSupport(support);
+                f.setStamp(stamp);
+                allFeedback.add(f);
+            }
+            cursor.close();
+            db.close();
+            return allFeedback.size();
+
+        }
+        cursor.close();
+        db.close();
+        return 0;
     }
 
     @Override

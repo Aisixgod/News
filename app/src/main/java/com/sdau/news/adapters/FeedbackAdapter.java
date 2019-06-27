@@ -86,23 +86,42 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
         holder.delete_feedback.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int position =holder.getAdapterPosition();
-                Feedback feedback=feedbacks.get(position);
-                if(SQLiteNewsImpl.newInstance(mContext).deleteFeedback(feedback)){
-                    Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                if (feedbacks.isEmpty()) {
+                    notifyDataSetChanged();
+                } else {
+                    int position = holder.getAdapterPosition();
+                    if (position >= feedbacks.size()) {
+                        position = feedbacks.size() - 1;
+                    }
+                    if (position <= 0) {
+                        position = 0;
+                    }
+
+
+                    Feedback feedback = feedbacks.get(position);
+                    if (SQLiteNewsImpl.newInstance(mContext).deleteFeedback(feedback)) {
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                        feedbacks.remove(position);
+                        notifyItemRemoved(position);
+                        notifyDataSetChanged();
+
+                    }
 
                 }
-
             }
         });
         holder.support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 int position =holder.getAdapterPosition();
                 Feedback feedback=feedbacks.get(position);
                 if(SQLiteNewsImpl.newInstance(mContext).addFeedbackSupport(feedback)){
                     Toast.makeText(mContext, "已点赞", Toast.LENGTH_LONG).show();
 
+                    feedbacks.get(position).setSupport(feedback.getSupport());
+                    notifyItemChanged(position);
+                      notifyDataSetChanged();
                 }
 
             }
@@ -112,9 +131,12 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
             public void onClick(View view) {
                 int position =holder.getAdapterPosition();
                 Feedback feedback=feedbacks.get(position);
+
                 if(SQLiteNewsImpl.newInstance(mContext).addFeedbackStamp(feedback)){
                     Toast.makeText(mContext, "已点踩", Toast.LENGTH_LONG).show();
-
+                    feedbacks.get(position).setStamp(feedback.getStamp());
+                    notifyItemChanged(position);
+                    notifyDataSetChanged();
                 }
             }
         });

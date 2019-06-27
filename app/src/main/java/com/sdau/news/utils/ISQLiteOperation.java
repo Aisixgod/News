@@ -45,6 +45,8 @@ public interface ISQLiteOperation {
 
     List<News> queryHistoryAll();
 
+    News queryHistoryByNews(News data);
+
     boolean addFeedback(Feedback feedback);
 
     boolean deleteHistory(News data);
@@ -54,6 +56,8 @@ public interface ISQLiteOperation {
     boolean addFeedbackSupport(Feedback feedback);
 
     boolean addFeedbackStamp(Feedback feedback);
+
+    int queryFeedbackByNews(News data);
 
     List<Feedback> queryFeedbackAll();
 
