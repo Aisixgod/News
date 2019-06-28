@@ -14,14 +14,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
+        android:label="@string/app_name"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".FeedbackUsActivity"></activity>
+        <activity android:name=".FeedbackContentActivity"></activity>
+        <activity android:name=".FeedbackUsActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".NewsContextActivity" />
+        <activity android:name=".NewsContentActivity" />
         <activity android:name=".NewsActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>

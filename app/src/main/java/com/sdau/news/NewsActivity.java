@@ -78,11 +78,9 @@ public class NewsActivity extends AppCompatActivity {
                     }
                     break;
                 case R.id.nav_history:
-                    if(SQLiteNewsImpl.newInstance(NewsActivity.this).queryHistoryAll()==null) {
-                        fragment = new HistoryFragment(true);
-                    }else {
-                        fragment = new HistoryFragment();
-                    }
+
+                        fragment = new HistoryFragment(NewsActivity.this,SQLiteNewsImpl.newInstance(NewsActivity.this).queryHistoryAll());
+
                     break;
             }
             if (fragment != null) {

@@ -57,7 +57,7 @@ public interface ISQLiteOperation {
 
     boolean addFeedbackStamp(Feedback feedback);
 
-    int queryFeedbackByNews(News data);
+    List<Feedback> queryFeedbackByNews(News data);
 
     List<Feedback> queryFeedbackAll();
 

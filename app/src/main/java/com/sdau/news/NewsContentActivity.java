@@ -6,14 +6,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.sdau.news.R;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebView;
@@ -27,9 +24,10 @@ import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.sdau.news.beans.Feedback;
 import com.sdau.news.beans.News;
+import com.sdau.news.fragments.NewsContainerFragment;
 import com.sdau.news.utils.SQLiteNewsImpl;
 
-public class NewsContextActivity extends AppCompatActivity {
+public class NewsContentActivity extends AppCompatActivity {
 
     private ProgressDialog progressDialog;
 
@@ -62,6 +60,18 @@ public class NewsContextActivity extends AppCompatActivity {
         toolbar.inflateMenu(R.menu.menu_newscontent_toolbar_item);
         toolbar.setTitle(data.getTitle());
         Button feedbackEditTextButton=findViewById(R.id.feedbackEditTextButton);
+        Button feedbackContentButton=findViewById(R.id.feedbackContentButton);
+        feedbackContentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("TAG", "onClick: 执行到传值前");
+                Intent intent = new Intent(NewsContentActivity.this, FeedbackContentActivity.class);
+                intent.putExtra("news_feedback_data", data);
+                Log.d("TAG", "onClick: 执行到传值中");
+               startActivity(intent);
+                Log.d("TAG", "onClick: 执行到传值后");
+            }
+        });
         EditText feedbackEditText=findViewById(R.id.feedback_editText);
         feedbackEditTextButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,8 +82,8 @@ public class NewsContextActivity extends AppCompatActivity {
                     feedback.setSubstance(substance);
                     feedback.setFeedbackNews(data);
                     feedbackEditText.getText().clear();
-                    if(SQLiteNewsImpl.newInstance(NewsContextActivity.this).addFeedback(feedback)) {
-                        Toast.makeText(NewsContextActivity.this, "发表成功！", Toast.LENGTH_SHORT).show();
+                    if(SQLiteNewsImpl.newInstance(NewsContentActivity.this).addFeedback(feedback)) {
+                        Toast.makeText(NewsContentActivity.this, "发表成功！", Toast.LENGTH_SHORT).show();
                     }
 
             }
@@ -83,15 +93,15 @@ public class NewsContextActivity extends AppCompatActivity {
         collectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SQLiteNewsImpl sqLiteNews=SQLiteNewsImpl.newInstance(NewsContextActivity.this);
+                SQLiteNewsImpl sqLiteNews=SQLiteNewsImpl.newInstance(NewsContentActivity.this);
                 if(sqLiteNews.queryCollectNews(data)==null) {
                     sqLiteNews.addCollect(data);
 
-                    Toast.makeText(NewsContextActivity.this, "添加成功！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewsContentActivity.this, "添加成功！", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     sqLiteNews.deleteCollect(data);
-                    Toast.makeText(NewsContextActivity.this, "取消收藏！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(NewsContentActivity.this, "取消收藏！", Toast.LENGTH_SHORT).show();
 
                 }
             }

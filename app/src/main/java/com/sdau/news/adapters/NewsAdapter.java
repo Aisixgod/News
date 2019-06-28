@@ -14,10 +14,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.sdau.news.NewsContextActivity;
+import com.sdau.news.NewsContentActivity;
 import com.sdau.news.R;
+import com.sdau.news.beans.Feedback;
 import com.sdau.news.beans.News;
-import com.sdau.news.fragments.CollectFragment;
 import com.sdau.news.utils.SQLiteNewsImpl;
 
 import java.util.ArrayList;
@@ -29,14 +29,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     private Context mContext;
 
-    private SQLiteNewsImpl collectSQL=SQLiteNewsImpl.newInstance(mContext);
-
     private List<News> mNews;
     private  String type;
-
-    public NewsAdapter(List<News> newsList){
-        mNews=newsList;
-    }
 
     public NewsAdapter(Context context,List<News> news,String type){
         mContext=context;
@@ -99,14 +93,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 int position =holder.getAdapterPosition();
                 if(position<0) return;
                 News news=mNews.get(position);
-                Intent intent = new Intent(mContext, NewsContextActivity.class);
+                Intent intent = new Intent(mContext, NewsContentActivity.class);
                 intent.putExtra("news_data",news);
                  mContext.startActivity(intent);
                  if(SQLiteNewsImpl.newInstance(mContext).queryHistoryByNews(news)==null) {
                      SQLiteNewsImpl.newInstance(mContext).addHistory(news);
                  }
 
-            };
+            }
         });
         return holder;
     }
@@ -116,8 +110,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
             News news = mNews.get(position);
             holder.newsTitle.setText(news.getTitle());
             holder.newsDate.setText(news.getDate());
-            holder.mewsFeedbackNumber.setText(String.valueOf(SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news)));
-
+            List<Feedback> feedbackNumber= SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news);
+            if(feedbackNumber==null){
+                holder.mewsFeedbackNumber.setText("0");
+            }else {
+                holder.mewsFeedbackNumber.setText(String.valueOf(feedbackNumber.size()));
+            }
         Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
 
 

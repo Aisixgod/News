@@ -45,19 +45,6 @@ public class NewsFragment extends Fragment  {
     private View view;
     private  Result result;
 
-   /* private Handler setAdapterHander = new Handler(){
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-           if(msg.what==1){
-               if(newsAdapter!=null) {
-                   newsAdapter = NewsAdapter.getNewsAdapter(getActivity(), result.getNews(), newsType);
-                   recyclerView.setAdapter(newsAdapter);
-               }
-           }
-        }
-    };*/
-
-
     public NewsFragment() {
     }
     public NewsFragment(String type,Result result){
@@ -66,32 +53,11 @@ public class NewsFragment extends Fragment  {
 
     }
 
-   /* public static NewsFragment newInstance(String type,Result result) {
-        // TAG = "NewsFragment_" + type;
-        // Log.d(TAG, "newInstance");
 
-        NewsFragment newsFragment = new NewsFragment();
-
-        //持有该新闻fragment的新闻种类
-
-         Bundle args = new Bundle();
-          args.putString(TYPE, type);
-        Log.d("TAG", "newInstance:种类为： "+type);
-          //在newsContainerFragment中调用newInstance时，传入新建fragment的类型
-        //然后在这里通过bundle传值（附给TYPE，最后在新建的fragment调用onCreate时获取该type值
-         newsFragment.setArguments(args);
-
-
-        return newsFragment;
-    }*/
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-       // Log.d(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-       // if (getArguments() != null) {
-      //      newsType = getArguments().getString(TYPE);
-     //   }
     }
 
 

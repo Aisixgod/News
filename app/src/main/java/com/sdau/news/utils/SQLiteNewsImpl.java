@@ -311,7 +311,7 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
     }
 
     @Override
-    public int queryFeedbackByNews(News data) {
+    public List<Feedback> queryFeedbackByNews(News data) {
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] columns = {"uniquekey", "title", "date", "category",
                 "author_name", "url", "thumbnail_pic_s", "substance","support","stamp"};
@@ -340,15 +340,16 @@ public class SQLiteNewsImpl implements ISQLiteOperation {
                 f.setSupport(support);
                 f.setStamp(stamp);
                 allFeedback.add(f);
+                Log.d(TAG, "queryFeedbackByNews: 评论为："+substance);
             }
             cursor.close();
             db.close();
-            return allFeedback.size();
+            return allFeedback;
 
         }
         cursor.close();
         db.close();
-        return 0;
+        return null;
     }
 
     @Override

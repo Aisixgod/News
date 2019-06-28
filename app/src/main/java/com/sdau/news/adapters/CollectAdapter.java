@@ -2,7 +2,6 @@ package com.sdau.news.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +16,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
-import com.sdau.news.NewsContextActivity;
+import com.sdau.news.NewsContentActivity;
 import com.sdau.news.R;
-import com.sdau.news.beans.Collect;
+import com.sdau.news.beans.Feedback;
 import com.sdau.news.beans.News;
 import com.sdau.news.utils.SQLiteNewsImpl;
 
@@ -91,13 +89,31 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
 
          holder =new CollectAdapter.ViewHolder(view);
 
+
+
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull CollectAdapter.ViewHolder holder, int position) {
+        News news = mNews.get(position);
+        holder.newsTitle.setText(news.getTitle());
+        holder.newsDate.setText(news.getDate());
+        List<Feedback> feedbackNumber= SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news);
+        if(feedbackNumber==null){
+            holder.mewsFeedbackNumber.setText("0");
+        }else {
+            holder.mewsFeedbackNumber.setText(String.valueOf(feedbackNumber.size()));
+        }
+        Log.d("TAG", "onBindViewHolder: 新闻图片内容为："+news.getThumbnail_pic_s());
+         Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int position =holder.getAdapterPosition();
                 if(position<0) return;
                 News news=mNews.get(position);
-                Intent intent = new Intent(mContext, NewsContextActivity.class);
+                Intent intent = new Intent(mContext, NewsContentActivity.class);
                 intent.putExtra("news_data",news);
                 mContext.startActivity(intent);
 
@@ -135,20 +151,6 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
                 }
             }
         });
-
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull CollectAdapter.ViewHolder holder, int position) {
-        News news = mNews.get(position);
-        holder.newsTitle.setText(news.getTitle());
-        holder.newsDate.setText(news.getDate());
-        holder.mewsFeedbackNumber.setText(String.valueOf(SQLiteNewsImpl.newInstance(mContext).queryFeedbackByNews(news)));
-
-        Log.d("TAG", "onBindViewHolder: 新闻图片内容为："+news.getThumbnail_pic_s());
-         Glide.with(mContext).load(news.getThumbnail_pic_s()).into(holder.newsPic);
-
 
     }
 

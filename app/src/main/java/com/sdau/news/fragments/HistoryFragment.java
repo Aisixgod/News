@@ -1,5 +1,6 @@
 package com.sdau.news.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,17 +15,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.sdau.news.R;
 import com.sdau.news.adapters.CollectAdapter;
 import com.sdau.news.adapters.HistoryAdapter;
+import com.sdau.news.beans.News;
+
+import java.util.List;
 
 public class HistoryFragment extends Fragment {
 
     private View view;
     private RecyclerView recyclerView;
+    private HistoryAdapter historyAdapter;
     //判断收藏夹是否为空
     private boolean isEmpty=false;
 
-    public HistoryFragment(){}
-    public HistoryFragment(boolean isEmpty){
-        this.isEmpty=isEmpty;
+    private List<News> history;
+
+    public HistoryFragment(Context context,List<News> history){
+        historyAdapter=new HistoryAdapter(context,history);
+        if (history==null){isEmpty=true;}
     }
 
     @Override
@@ -35,7 +42,7 @@ public class HistoryFragment extends Fragment {
             recyclerView =  view.findViewById(R.id.history_recyclerView);
             recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
             recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-            recyclerView.setAdapter(new HistoryAdapter(getActivity()));
+            recyclerView.setAdapter(historyAdapter);
         }
         else {
             view = inflater.inflate(R.layout.fragment_collect_empty, container, false);
