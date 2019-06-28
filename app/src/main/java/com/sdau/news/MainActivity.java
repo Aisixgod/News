@@ -2,9 +2,14 @@ package com.sdau.news;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.sdau.news.beans.Result;
 import com.sdau.news.fragments.NewsContainerFragment;
@@ -29,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         myApplication=(MyApplication) getApplication();
         SQLiteNewsImpl.newInstance(this);
+        ImageView imageView=findViewById(R.id.welcome);
+        setAnimate(imageView);
+
         //开启线程
         new Thread(){
             @Override
@@ -42,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
                        @Override
                        public void run() {
                            Intent intent=new Intent(MainActivity.this,NewsActivity.class);
-                         myApplication.setResultArrayList(resultArrayList);
+                             myApplication.setResultArrayList(resultArrayList);
                             startActivity(intent);
+
                             finish();
                        }
                    });
@@ -77,6 +86,29 @@ public class MainActivity extends AppCompatActivity {
             resultArrayList.add(result);
         }
     }
+
+    public void setAnimate(ImageView imageView){
+        ObjectAnimator animatorx = ObjectAnimator.ofFloat(imageView, "ScaleX", 1.0f,1.4f);
+        ObjectAnimator animatory = ObjectAnimator.ofFloat(imageView, "ScaleY", 1.0f,1.4f);
+
+        AnimatorSet set = new AnimatorSet();
+        set.setDuration(4000).play(animatorx).with(animatory);
+        set.start();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                // TODO Auto-generated method stub
+                super.onAnimationStart(animation);
+
+            }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                // TODO Auto-generated method stub
+                super.onAnimationEnd(animation);
+            }
+        });
+    }
+
 
 
 }

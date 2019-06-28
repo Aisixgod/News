@@ -142,7 +142,7 @@ public class CollectAdapter extends RecyclerView.Adapter<CollectAdapter.ViewHold
 
                     collectSQL.createTable();
                     if (collectSQL.deleteCollect(news)) {
-                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
                     }
                     mNews.remove(position);
                     notifyItemRemoved(position);

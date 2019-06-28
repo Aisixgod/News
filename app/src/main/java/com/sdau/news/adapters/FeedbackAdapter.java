@@ -22,6 +22,8 @@ import com.sdau.news.utils.SQLiteNewsImpl;
 
 import java.util.List;
 
+
+
 public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHolder> {
 
     private Context mContext;
@@ -91,6 +93,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
         Log.d("TAG", "onBindViewHolder: isNewsFeedbackContent"+isNewsFeedbackContent);
             if(!isNewsFeedbackContent) {
                 holder.feedback_news_title.setText(feedback.getFeedbackNews().getTitle());
+                holder.delete_feedback.setBackgroundResource(R.drawable.delete_collect);
             }
         if(!isNewsFeedbackContent) {
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -107,34 +110,31 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
 
 
             });
-        }
-        holder.delete_feedback.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (feedbacks.isEmpty()) {
-                    notifyDataSetChanged();
-                } else {
-                    int position = holder.getAdapterPosition();
-                    if (position >= feedbacks.size()) {
-                        position = feedbacks.size() - 1;
-                    }
-                    if (position <= 0) {
-                        position = 0;
-                    }
 
-
-                    Feedback feedback = feedbacks.get(position);
-                    if (SQLiteNewsImpl.newInstance(mContext).deleteFeedback(feedback)) {
-                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
-                        feedbacks.remove(position);
-                        notifyItemRemoved(position);
+            holder.delete_feedback.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (feedbacks.isEmpty()) {
                         notifyDataSetChanged();
+                    } else {
+                        int position = holder.getAdapterPosition();
+
+
+
+                        Feedback feedback = feedbacks.get(position);
+                        if (SQLiteNewsImpl.newInstance(mContext).deleteFeedback(feedback)) {
+                            Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
+                            feedbacks.remove(position);
+                            notifyItemRemoved(position);
+                            notifyDataSetChanged();
+
+                        }
 
                     }
-
                 }
-            }
-        });
+            });
+        }
+
         holder.support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,7 +142,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
                 int position =holder.getAdapterPosition();
                 Feedback feedback=feedbacks.get(position);
                 if(SQLiteNewsImpl.newInstance(mContext).addFeedbackSupport(feedback)){
-                    Toast.makeText(mContext, "已点赞", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "已点赞", Toast.LENGTH_SHORT).show();
 
                     feedbacks.get(position).setSupport(feedback.getSupport());
                     notifyItemChanged(position);
@@ -158,7 +158,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.ViewHo
                 Feedback feedback=feedbacks.get(position);
 
                 if(SQLiteNewsImpl.newInstance(mContext).addFeedbackStamp(feedback)){
-                    Toast.makeText(mContext, "已点踩", Toast.LENGTH_LONG).show();
+                    Toast.makeText(mContext, "已点踩", Toast.LENGTH_SHORT).show();
                     feedbacks.get(position).setStamp(feedback.getStamp());
                     notifyItemChanged(position);
                     notifyDataSetChanged();

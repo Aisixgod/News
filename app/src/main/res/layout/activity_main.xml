@@ -10,7 +10,7 @@
     android:fitsSystemWindows="true"
     tools:context=".MainActivity">
     <ImageView
-        android:scaleType="fitXY"
+
         android:id="@+id/welcome"
         android:src="@drawable/welcome"
         android:layout_width="match_parent"

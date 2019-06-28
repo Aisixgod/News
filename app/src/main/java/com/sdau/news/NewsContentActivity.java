@@ -64,12 +64,12 @@ public class NewsContentActivity extends AppCompatActivity {
         feedbackContentButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("TAG", "onClick: 执行到传值前");
+
                 Intent intent = new Intent(NewsContentActivity.this, FeedbackContentActivity.class);
                 intent.putExtra("news_feedback_data", data);
-                Log.d("TAG", "onClick: 执行到传值中");
+
                startActivity(intent);
-                Log.d("TAG", "onClick: 执行到传值后");
+
             }
         });
         EditText feedbackEditText=findViewById(R.id.feedback_editText);

@@ -124,7 +124,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
                     if (SQLiteNewsImpl.newInstance(mContext).deleteHistory(news)) {
 
-                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mContext, "删除成功", Toast.LENGTH_SHORT).show();
                         mNews.remove(position);
                         notifyItemRemoved(position);
                     }
